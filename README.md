@@ -2,6 +2,7 @@
 
 
 Description:
+
 	This python package is a web application where users enter text queries or click on photos to retrieve related images. The dataset used in this package is the ImageNet image set. 
 	The images and the text queries are processed using the OpenAI CLIP algorithm and compared using their cosine similarity. 
 	The search is displayed through a flask webapp where users can choose to either enter a text search query or select an image from an existing search. 
@@ -9,6 +10,7 @@ Description:
 	
 	
 Installation:
+
 	- Dataset:
 		https://www.kaggle.com/competitions/imagenet-object-localization-challenge/data
 
@@ -26,9 +28,12 @@ Installation:
 		sklearn 			(https://scikit-learn.org/stable/install.html)
 		wtforms 			(https://pypi.org/project/WTForms/)
 
-	Step 1: Download dataset, Install CUDA, and install required python packages with links and instruction provided above.
-	Step 2: After downloading the dataset, the dataset will be in a folder called ILSVRC. Take all the folders from "*\ILSVRC\Data\train\*" and move it into our local "static" file so flask can access it. Move it to "*\Clip\static\IMAGES\". Then take both of the "*\ILSVRC\Data\test" and "*\ILSVRC\Data\val" from the dataset and put those two folders into the "*\Clip\static\IMAGES\" folder. The IMAGES folder should have 1002 subfolders. (READ NEXT STEP IF CONFUSED) 
-	Step 2: Make sure that the "Clip" file structure follows the following structure:
+	* Step 1: Download dataset, Install CUDA, and install required python packages with links and instruction provided above.
+
+	* Step 2: After downloading the dataset, the dataset will be in a folder called ILSVRC. Take all the folders from "*\ILSVRC\Data\train\*" and move it into our local "static" file so flask can access it. Move it to "*\Clip\static\IMAGES\". Then take both of the "*\ILSVRC\Data\test" and "*\ILSVRC\Data\val" from the dataset and put those two folders into the "*\Clip\static\IMAGES\" folder. The IMAGES folder should have 1002 subfolders. (READ NEXT STEP IF CONFUSED) 
+    
+	* Step 2: Make sure that the "Clip" file structure follows the following structure:
+
 		|---/Clip 
 		|	 |--/all_images.npy
 		|	 |--/all_labels.npy
@@ -85,18 +90,20 @@ Installation:
 		
 		
 Execution:
-	Step 1: Go to the "Clip" folder and open "main... reason for depression.py" in your preferred IDE. Run the python file. I used VSCode
-	Step 2: Open up a browser and go to the following URL: http://127.0.0.1:5000
-	Step 3: Type search query into the search bar and press "Search"
-	Step 4: Wait and images will show up 
-	Step 5: Click an image in the top 50 web of images
-	Step 6: Wait about 5 seconds (For backend to process image. May take less time if computer is faster)
+
+	* Step 1: Go to the "Clip" folder and open "main... reason for depression.py" in your preferred IDE. Run the python file. I used VSCode
+	* Step 2: Open up a browser and go to the following URL: http://127.0.0.1:5000
+	* Step 3: Type search query into the search bar and press "Search"
+	* Step 4: Wait and images will show up 
+	* Step 5: Click an image in the top 50 web of images
+	* Step 6: Wait about 5 seconds (For backend to process image. May take less time if computer is faster)
 		Note: You will know that the search is done if you see this in the python terminal after "Found Image": '127.0.0.1 - - [{TIME}] "GET /more?ID={ID number}&sim={similarity} HTTP/1.1" 200'
 
 -------------------FOR TSNE-------------------
 
 
 Description:
+
 	The file tsne.py demonstrates the capability of tSNE visualization with
 	a subset of a classifcation dataset. This package takes images in a
 	dataset, embeds them with the CLIP image encoder into a similarity embedding
