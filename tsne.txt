@@ -1,0 +1,58 @@
+import torch
+from torchvision.datasets import ImageFolder
+from torchvision import transforms
+import clip
+from sklearn.manifold import TSNE
+from matplotlib import pyplot as plt
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+model, _ = clip.load("ViT-B/32",device=device)
+
+tensorize = transforms.ToTensor()
+normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                 std=[0.229, 0.224, 0.225])
+crop = transforms.CenterCrop(224)
+t = transforms.Compose([tensorize, crop, normalize])
+
+# each item in the data list is a tuple with a 3x224x224 tensor and the index of the class folder
+data = ImageFolder('./imagenet/val', transform=t)
+
+# make index in data tuple from above correspond to class name
+with open('classnames.txt') as f:
+    classes = f.readlines()
+classes = [classes[i].strip('\n').split('\t')[1] for i in range(1000)]
+
+tsne = TSNE(metric='cosine')
+
+dataloader = torch.utils.data.DataLoader(data,
+                                          num_workers=1,
+                                          batch_size=1,
+                                          shuffle=False)
+
+class_names = ['collie', 'ladle', 'obelisk', 'snorkel', 'soccer ball']
+class_idxs = [231, 618, 682, 801, 805]
+examples = {idx: [] for idx in class_idxs}
+
+for (img, label) in dataloader:
+    if int(label) in class_idxs:
+        examples[int(label)].append(img)
+
+examples = [torch.cat(imgs, dim=0) for imgs in examples.values()]
+embs_list = []
+
+for imgs in examples:
+    with torch.no_grad():
+        embs = model.encode_image(imgs.to(device))
+    embs_list.append(embs)
+
+embs_list_np = torch.cat(embs_list, dim=0).cpu().numpy()
+
+X_2d = tsne.fit_transform(embs_list_np)
+
+for i, cls in enumerate(class_names):
+    x_to_plot = X_2d[i*50:(i+1)*50][:,0]
+    y_to_plot = X_2d[i*50:(i+1)*50][:,1]
+    plt.scatter(x_to_plot, y_to_plot, label=cls)
+plt.legend()
+plt.title('tSNE Visualization for ImageNet Val Subset')
+plt.savefig('+'.join(class_names)+'.png')
