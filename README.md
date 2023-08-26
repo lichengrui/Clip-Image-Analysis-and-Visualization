@@ -1,3 +1,7 @@
+FOR MORE INFORMATION ABOUT THIS, PLEASE SEE "CLIP Report.pdf"
+
+See: https://www.youtube.com/watch?v=DZ0qJaDuLrM to see example of visualization
+
 -------------------FOR WEBAPP-------------------
 
 
